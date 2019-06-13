@@ -35,7 +35,7 @@ public class SpongyBot extends TelegramLongPollingBot{
 			message.setText("Ok inserisci il titolo del libro da cercare");
 			sendMessaggio(message);
 			try {
-				command.wait();
+				command.wait(10000);
 				find(message, update);
 			} catch (InterruptedException e) {
 				message.setText("Errore Messaggio");
