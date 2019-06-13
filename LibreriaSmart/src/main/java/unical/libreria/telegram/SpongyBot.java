@@ -2,6 +2,7 @@ package unical.libreria.telegram;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -11,7 +12,10 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import unical.libreria.detection.OcrDetection;
 
 public class SpongyBot extends TelegramLongPollingBot{
+	
 	Boolean find=false;
+	
+	
 	public void onUpdateReceived(Update update) {
 
 		//Stringa test per vedere su console i messaggi
@@ -95,7 +99,15 @@ public class SpongyBot extends TelegramLongPollingBot{
 		OcrDetection od = new OcrDetection();
 		
 		try {
-			od.FindText(update.getMessage().getText());
+			if(od.FindText(update.getMessage().getText())) {
+				message.setText("Libro Trovato!Sarà acceso un led.");
+				sendMessaggio(message);
+			}
+			else {
+				message.setText("Libro NON trovato...");
+				sendMessaggio(message);
+			}
+		
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +119,12 @@ public class SpongyBot extends TelegramLongPollingBot{
 	public void reboot(SendMessage message) {
 		message.setText("Il Sistema sarà riavviato ora, ci potranno volere diversi minuti");
 		sendMessaggio(message);
-		//Comando terminale reboot
+		try {
+			Process p = Runtime.getRuntime().exec("reboot");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void sendMessaggio(SendMessage message) {

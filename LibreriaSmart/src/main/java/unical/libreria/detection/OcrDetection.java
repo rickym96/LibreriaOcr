@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class OcrDetection {
 	
-	public void FindText(String messaggio) throws FileNotFoundException {
+	public Boolean FindText(String messaggio) throws FileNotFoundException {
 		File f=new File("/home/michele/Scrivania/1.txt");
 		String input, tesseract;
 		
@@ -22,9 +22,9 @@ public class OcrDetection {
 		tesseract=leggiTesseract(f);
 		
 		if(valutaDifferenze(input, tesseract))
-			System.out.println("libro Trovato!");
+			return true;
 		else
-			System.out.println("libro NON Trovato!");
+			return false;
 		
 	}
 	
