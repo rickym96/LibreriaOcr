@@ -11,7 +11,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import unical.libreria.detection.OcrDetection;
 
 public class SpongyBot extends TelegramLongPollingBot{
-
+	
 	public void onUpdateReceived(Update update) {
 
 		//Stringa test per vedere su console i messaggi
@@ -35,7 +35,7 @@ public class SpongyBot extends TelegramLongPollingBot{
 			message.setText("Ok inserisci il titolo del libro da cercare");
 			sendMessaggio(message);
 			try {
-				command.wait(10000);
+				waitresponse(update);
 				find(message, update);
 			} catch (InterruptedException e) {
 				message.setText("Errore Messaggio");
@@ -86,6 +86,18 @@ public class SpongyBot extends TelegramLongPollingBot{
 		//		}
 
 
+	}
+	
+	public void waitresponse(Update update) throws InterruptedException {
+		String prev = update.getMessage().getText();
+		boolean stop = false;
+		
+		while(stop == false) {
+			if(prev != update.getMessage().getText()) {
+				stop = true;
+			}
+			wait(1000);
+		}
 	}
 
 	public void find(SendMessage message, Update update) {
