@@ -32,7 +32,17 @@ public class SpongyBot extends TelegramLongPollingBot{
 		}
 		//Comando Cerca/Find
 		else if(command.equals("/find")){
-			find(message, update);
+			message.setText("Ok inserisci il titolo del libro da cercare");
+			sendMessaggio(message);
+			try {
+				command.wait();
+				find(message, update);
+			} catch (InterruptedException e) {
+				message.setText("Errore Messaggio");
+				sendMessaggio(message);
+				e.printStackTrace();
+			}
+		
 		}
 		//Comando Reboot
 		else if(command.equals("/reboot")){
@@ -79,9 +89,6 @@ public class SpongyBot extends TelegramLongPollingBot{
 	}
 
 	public void find(SendMessage message, Update update) {
-		message.setText("Ok inserisci il titolo del libro da cercare");
-
-		sendMessaggio(message);
 		
 		//Comando terminale cercalibro
 		OcrDetection od = new OcrDetection();
