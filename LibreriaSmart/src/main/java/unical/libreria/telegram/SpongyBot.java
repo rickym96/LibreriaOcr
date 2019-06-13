@@ -11,7 +11,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import unical.libreria.detection.OcrDetection;
 
 public class SpongyBot extends TelegramLongPollingBot{
-	
+	Boolean find=false;
 	public void onUpdateReceived(Update update) {
 
 		//Stringa test per vedere su console i messaggi
@@ -24,37 +24,36 @@ public class SpongyBot extends TelegramLongPollingBot{
 
 		SendMessage message = new SendMessage();
 		message.setChatId(update.getMessage().getChatId());
-
-		//Comando Ping
-		if(command.equals("/ping")){
-			message.setText("Sono pronto");
-			sendMessaggio(message);
-		}
-		//Comando Cerca/Find
-		else if(command.equals("/find")){
-			message.setText("Ok inserisci il titolo del libro da cercare");
-			sendMessaggio(message);
-			try {
-				waitresponse(update);
-				find(message, update);
-			} catch (InterruptedException e) {
-				message.setText("Errore Messaggio");
+	if(find==false)	{	
+			//Comando Ping
+			if(command.equals("/ping")){
+				message.setText("Sono pronto");
 				sendMessaggio(message);
-				e.printStackTrace();
 			}
+			//Comando Cerca/Find
+			else if(command.equals("/find")){
+				message.setText("Ok inserisci il titolo del libro da cercare");
+				sendMessaggio(message);
+				
+				find=true;
+			
+			}
+			//Comando Reboot
+			else if(command.equals("/reboot")){
+				reboot(message);
+			}
+			//Comando Non riconosciuto
+			else {
+				message.setText("Comando non Riconosciuto");
+				sendMessaggio(message);
+			}
+
+	}
+	else if(!command.equals("/find")) {
+		find(message, update);
+		find=false;
+	}
 		
-		}
-		//Comando Reboot
-		else if(command.equals("/reboot")){
-			reboot(message);
-		}
-		//Comando Non riconosciuto
-		else {
-			message.setText("Comando non Riconosciuto");
-			sendMessaggio(message);
-		}
-
-
 		//Comando test 
 
 
@@ -88,17 +87,7 @@ public class SpongyBot extends TelegramLongPollingBot{
 
 	}
 	
-	public void waitresponse(Update update) throws InterruptedException {
-		String prev = update.getMessage().getText();
-		boolean stop = false;
-		
-		while(stop == false) {
-			if(prev != update.getMessage().getText()) {
-				stop = true;
-			}
-			wait(1000);
-		}
-	}
+
 
 	public void find(SendMessage message, Update update) {
 		
