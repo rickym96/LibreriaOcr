@@ -8,8 +8,9 @@ public class MainTest {
 		Communicator comunicatore = new Communicator();
 
 		comunicatore.searchForPorts();
-		comunicatore.connect("COM4");
+		comunicatore.connect("COM3");
 		comunicatore.initIOStream();
+		comunicatore.initListener();
 		comunicatore.disconnect();
 	}
 

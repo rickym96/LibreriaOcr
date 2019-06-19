@@ -139,14 +139,14 @@ public class Communicator implements SerialPortEventListener
             //
             input = serialPort.getInputStream();
             output = serialPort.getOutputStream();
-//        	String m = "0x00000001";
-//      	byte[] a;
-//       	
-//       	a= m.getBytes();
+        	String m = "0x0000000000000001";
+      	byte[] a;
+       	
+       	a= m.getBytes();
             
-            writeData(1);
+            writeData2(a);
       
-          // writeData(1,1); 
+           writeData(1,1); 
            
             successful = true;
             return successful;
@@ -185,7 +185,7 @@ public class Communicator implements SerialPortEventListener
         //close the serial port
         try
         {
-            writeData(0);
+            //writeData(0);
 
             serialPort.removeEventListener();
             serialPort.close();
@@ -248,16 +248,16 @@ public class Communicator implements SerialPortEventListener
     //method that can be called to send data
     //pre: open serial port
     //post: data sent to the other device
-//    public void writeData(int leftThrottle, int rightThrottle)
-    public void writeData(int leftThrottle)
+    public void writeData(int leftThrottle, int rightThrottle)
+//    public void writeData(int leftThrottle)
     {
         try
         {
             output.write(leftThrottle);
             output.flush();
-            //this is a delimiter for the data
-//            output.write(DASH_ASCII);
-//            output.flush();
+//            this is a delimiter for the data
+            output.write(DASH_ASCII);
+            output.flush();
             
 //            output.write(rightThrottle);
 //            output.flush();
